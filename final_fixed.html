@@ -1,0 +1,1968 @@
+<!DOCTYPE html>
+
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ADDI - تطبيق الإنتاجية المتكامل</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+<style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --secondary: #3f37c9;
+            --accent: #f72585;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #ef233c;
+            --card-bg: #ffffff;
+            --card-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+            --bg-gradient: linear-gradient(135deg, #f0f4ff 0%, #e6eeff 100%);
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a5568;
+            --border-radius: 24px;
+        }
+
+        .dark-mode {
+            --primary: #5e72e4;
+            --primary-light: #7e95f2;
+            --secondary: #4a4dcc;
+            --accent: #ff6b9d;
+            --dark: #f8f9fa;
+            --light: #1a1a2e;
+            --gray: #a0aec0;
+            --card-bg: #252a41;
+            --card-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+            --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            --text-primary: #f8f9fa;
+            --text-secondary: #cbd5e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+
+        /* شريط العنوان */
+        .app-header {
+            text-align: center;
+            padding: 30px 0 20px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
+            color: white;
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--accent);
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .app-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .app-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin: 0 auto;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* البطاقات */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 25px;
+            margin-bottom: 25px;
+            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .card-header h2 {
+            font-size: 1.7rem;
+            color: var(--primary);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-header .icon {
+            color: var(--primary);
+            font-size: 1.6rem;
+        }
+
+        /* قسم المهام */
+        .focus-box {
+            background: rgba(67, 97, 238, 0.03);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px dashed rgba(67, 97, 238, 0.15);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 5px rgba(67, 97, 238, 0.15);
+        }
+
+        .task-list {
+            margin-top: 30px;
+        }
+
+        .task-list-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .task-list-header h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            background: var(--card-bg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s;
+            position: relative;
+            border-left: 4px solid var(--primary);
+        }
+
+        .task-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+        }
+
+        .task-check {
+            margin: 5px 20px 0 0;
+            width: 24px;
+            height: 24px;
+            accent-color: var(--primary);
+        }
+
+        .task-content {
+            flex-grow: 1;
+        }
+
+        .task-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .task-description {
+            font-size: 1.05rem;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .task-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.95rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .task-meta i {
+            margin-left: 5px;
+        }
+
+        .task-reminder {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent);
+            font-weight: 500;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        .task-item.completed {
+            border-left-color: var(--success);
+            opacity: 0.8;
+        }
+
+        .task-item.completed .task-title,
+        .task-item.completed .task-description {
+            text-decoration: line-through;
+            color: var(--gray);
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* المؤقت */
+        .timer-container {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+
+        .timer-display {
+            font-size: 4.5rem;
+            font-weight: 800;
+            font-family: 'Courier New', monospace;
+            margin: 30px 0;
+            color: var(--text-primary);
+            text-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            letter-spacing: 3px;
+        }
+
+        .timer-modes {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            background: rgba(67, 97, 238, 0.15);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 35px;
+            color: var(--primary);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.05rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .timer-btn.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .timer-label {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 12px 25px;
+            background: rgba(67, 97, 238, 0.08);
+            border-radius: 50px;
+            max-width: 400px;
+            margin: 0 auto 30px;
+        }
+
+        /* شريط التنقل السفلي */
+        
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            background: var(--card-bg);
+            padding: 15px 0;
+            box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+            border-radius: 30px 30px 0 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--gray);
+            cursor: pointer;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            min-width: 70px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.15);
+            transform: translateY(-15px);
+        }
+
+        .nav-item i {
+            font-size: 1.7rem;
+            margin-bottom: 8px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-item.active i {
+            color: var(--primary);
+            transform: scale(1.25);
+        }
+        /* الأزرار */
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 18px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+        }
+
+        .btn i {
+            margin-left: 12px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(67, 97, 238, 0.5);
+        }
+        
+        .btn-warning:hover {
+            background: #da8500;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(248, 150, 30, 0.4);
+        }
+        
+        .btn-danger:hover {
+            background: #d90429;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(239, 35, 60, 0.4);
+        }
+
+        .btn-lg {
+            padding: 18px 36px;
+            font-size: 1.2rem;
+        }
+
+        /* التقويم */
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .calendar-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 18px;
+        }
+
+        .calendar-nav-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .calendar-nav-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .calendar-header {
+            text-align: center;
+            font-weight: 700;
+            padding: 15px 0;
+            font-size: 1.05rem;
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.08);
+            border-radius: 15px;
+        }
+
+        .calendar-day {
+            text-align: center;
+            padding: 16px 0;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-size: 1.05rem;
+            position: relative;
+            background: var(--card-bg);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80px;
+        }
+
+        .calendar-day:hover {
+            background: rgba(67, 97, 238, 0.1);
+            transform: scale(1.08);
+        }
+
+        .calendar-day.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 6px 18px rgba(67, 97, 238, 0.4);
+            transform: scale(1.08);
+        }
+
+        .calendar-day.today {
+            background: var(--accent);
+            color: white;
+            font-weight: bold;
+        }
+
+        .calendar-event {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+        }
+
+        .day-number {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .day-events {
+            display: flex;
+            gap: 3px;
+            margin-top: 5px;
+        }
+
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--success);
+        }
+
+        /* الملفات */
+        .file-uploader {
+            border: 3px dashed var(--primary);
+            border-radius: 22px;
+            padding: 40px 20px;
+            text-align: center;
+            margin: 25px 0;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .file-uploader:hover {
+            background: rgba(67, 97, 238, 0.1);
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .file-uploader i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        .file-list {
+            margin-top: 30px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 18px;
+            background: var(--card-bg);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+        }
+
+        .file-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .file-icon {
+            margin-left: 20px;
+            color: var(--primary);
+            font-size: 2.2rem;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(67, 97, 238, 0.1);
+            border-radius: 15px;
+        }
+
+        .file-info {
+            flex-grow: 1;
+        }
+
+        .file-name {
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+            color: var(--text-primary);
+        }
+
+        .file-meta {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 20px;
+        }
+
+        .file-actions {
+            display: flex;
+            gap: 15px;
+        }
+
+        .action-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-size: 1.2rem;
+        }
+
+        .action-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.15);
+        }
+
+        /* الملاحظات */
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .note {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.05) 0%, rgba(58, 12, 163, 0.05) 100%);
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(67, 97, 238, 0.15);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .note:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .note-title {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.3rem;
+            max-width: 80%;
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .note-content {
+            line-height: 1.7;
+            color: var(--text-primary);
+            flex-grow: 1;
+            font-size: 1.05rem;
+            overflow: hidden;
+        }
+
+        .note-date {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: left;
+        }
+
+        .note-color {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 8px;
+            height: 100%;
+            border-radius: 0 18px 18px 0;
+            background: var(--accent);
+        }
+
+        /* الإحصائيات */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+        }
+
+        /* إخفاء الأقسام */
+        .section {
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* رسائل التأكيد */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 18px 25px;
+            border-radius: 14px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            border-left: 4px solid var(--success);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification i {
+            font-size: 1.8rem;
+            color: var(--success);
+        }
+
+        /* تحسينات للهواتف */
+        @media (max-width: 768px) {
+            .timer-display {
+                font-size: 3.5rem;
+            }
+            
+            .timer-controls {
+                flex-wrap: wrap;
+            }
+            
+            .btn {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-item {
+                padding: 8px 15px;
+                min-width: 60px;
+            }
+            
+            .notes-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .calendar-day {
+                min-height: 60px;
+                padding: 10px 0;
+            }
+            
+            .app-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timer-display {
+                font-size: 2.8rem;
+            }
+            
+            .timer-modes {
+                gap: 10px;
+            }
+            
+            .timer-btn {
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .stat-value {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* وضع الظلام/الضوء */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+            font-size: 1.4rem;
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+<!-- شريط العنوان -->
+<div class="app-header">
+<div class="header-content">
+<h1><i class="fas fa-rocket"></i> ADDI</h1>
+<p>تطبيق الإنتاجية المتكامل الذي يساعدك على تحقيق أهدافك وإدارة وقتك بفعالية</p>
+</div>
+</div>
+<!-- زر تبديل الوضع -->
+<div class="theme-toggle" id="themeToggle">
+<i class="fas fa-moon"></i>
+</div>
+<!-- قسم المهام -->
+<div class="section active" id="focus-section">
+<div class="card">
+<div class="card-header">
+<h2><i class="fas fa-tasks"></i> إدارة المهام</h2>
+<i class="fas fa-bullseye icon"></i>
+</div>
+<div class="focus-box">
+<div class="form-row">
+<div class="form-group">
+<label for="taskTitle"><i class="fas fa-heading"></i> عنوان المهمة</label>
+<input class="form-control" id="taskTitle" placeholder="ماذا تريد أن تفعل؟" type="text"/>
+</div>
+<div class="form-group">
+<label for="taskCategory"><i class="fas fa-tags"></i> التصنيف</label>
+<select class="form-control" id="taskCategory">
+<option>عمل</option>
+<option>شخصي</option>
+<option>صحة</option>
+<option>تعليم</option>
+<option>مشاريع</option>
+<option>أخرى</option>
+</select>
+</div>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="taskDate"><i class="fas fa-calendar-day"></i> التاريخ</label>
+<input class="form-control" id="taskDate" type="date"/>
+</div>
+<div class="form-group">
+<label for="taskTime"><i class="fas fa-clock"></i> الوقت</label>
+<input class="form-control" id="taskTime" type="time"/>
+</div>
+</div>
+<div class="form-group">
+<label for="taskDescription"><i class="fas fa-align-left"></i> الوصف</label>
+<textarea class="form-control" id="taskDescription" placeholder="أضف تفاصيل المهمة..." rows="3"></textarea>
+</div>
+<div class="form-row">
+<div class="form-group">
+<label for="taskPriority"><i class="fas fa-flag"></i> الأولوية</label>
+<select class="form-control" id="taskPriority">
+<option>عادية</option>
+<option>متوسطة</option>
+<option>عاجلة</option>
+</select>
+</div>
+<div class="form-group">
+<label for="taskReminder">
+<i class="fas fa-bell"></i> تفعيل التذكير
+                                <input id="taskReminder" style="margin-right: 10px;" type="checkbox"/>
+</label>
+</div>
+</div>
+<button class="btn btn-primary btn-lg" id="addTaskBtn" style="width: 100%;">
+<i class="fas fa-plus-circle"></i> إضافة مهمة جديدة
+                    </button>
+</div>
+<div class="task-list">
+<div class="task-list-header">
+<h3><i class="fas fa-list-check"></i> مهامي</h3>
+<div class="filter-actions">
+<select class="form-control" style="width: auto;">
+<option>كل المهام</option>
+<option>المكتملة فقط</option>
+<option>غير المكتملة</option>
+</select>
+<div class="task-action-btn" title="ترتيب المهام">
+<i class="fas fa-sort"></i>
+</div>
+</div>
+</div>
+<div id="tasksContainer">
+<!-- المهام ستضاف هنا ديناميكيًا -->
+</div>
+</div>
+</div>
+</div>
+<!-- قسم المؤقت -->
+<div class="section" id="timer-section">
+<div class="card">
+<div class="card-header">
+<h2><i class="fas fa-clock"></i> مؤقت بومودورو</h2>
+<i class="fas fa-stopwatch icon"></i>
+</div>
+<div class="timer-container">
+<div class="timer-label">
+<i class="fas fa-flag"></i>
+<span id="timerLabel">حان وقت العمل!</span>
+</div>
+<div class="timer-display" id="timerDisplay">25:00</div>
+<div class="timer-modes">
+<button class="timer-btn active" data-minutes="25">عمل (25 د)</button>
+<button class="timer-btn" data-minutes="5">استراحة قصيرة (5 د)</button>
+<button class="timer-btn" data-minutes="15">استراحة طويلة (15 د)</button>
+<button class="timer-btn" data-minutes="50">جلسة مكثفة (50 د)</button>
+</div>
+<div class="timer-controls">
+<button class="btn btn-primary" id="startTimerBtn">
+<i class="fas fa-play"></i> بدء
+                        </button>
+<button class="btn btn-warning" id="pauseTimerBtn">
+<i class="fas fa-pause"></i> إيقاف
+                        </button>
+<button class="btn btn-danger" id="resetTimerBtn">
+<i class="fas fa-redo"></i> إعادة
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- قسم التقويم -->
+<div class="section" id="calendar-section">
+<div class="card">
+<div class="card-header">
+<h2><i class="fas fa-calendar-alt"></i> تقويم المهام</h2>
+<i class="fas fa-calendar icon"></i>
+</div>
+<div class="calendar-controls">
+<div class="calendar-title">
+<i class="fas fa-calendar"></i>
+<span id="calendarTitle">نوفمبر 2023</span>
+</div>
+<div class="calendar-nav">
+<button class="calendar-nav-btn" id="prevMonthBtn">
+<i class="fas fa-chevron-right"></i>
+</button>
+<button class="calendar-nav-btn" id="todayBtn">
+                            اليوم
+                        </button>
+<button class="calendar-nav-btn" id="nextMonthBtn">
+<i class="fas fa-chevron-left"></i>
+</button>
+</div>
+</div>
+<div id="calendarContainer">
+<!-- التقويم سيتم إنشاؤه ديناميكيًا -->
+</div>
+<div id="tasksForDate" style="margin-top: 30px;">
+<h3 style="margin-bottom: 20px; color: var(--primary); text-align: center;">
+<i class="fas fa-tasks"></i> المهام في هذا اليوم
+                    </h3>
+<div id="dateTasksList">
+<!-- المهام للتاريخ المحدد -->
+</div>
+</div>
+</div>
+</div>
+<!-- قسم الملفات -->
+<div class="section" id="files-section">
+<div class="card">
+<div class="card-header">
+<h2><i class="fas fa-folder-open"></i> مدير الملفات</h2>
+<i class="fas fa-cloud-upload-alt icon"></i>
+</div>
+<div class="file-uploader" id="uploadArea">
+<i class="fas fa-cloud-upload-alt"></i>
+<h3>اسحب وأفلت الملفات هنا</h3>
+<p>أو انقر لاختيار الملفات (PDF, صور, مستندات, وغيرها)</p>
+<input class="hidden-input" id="fileInput" multiple="" style="display: none;" type="file"/>
+</div>
+<button class="btn btn-primary" id="uploadBtn" style="width: 100%; padding: 18px; margin-top: 20px;">
+<i class="fas fa-upload"></i> رفع الملفات المحددة
+                </button>
+<div class="file-list" id="fileList">
+<div class="task-list-header">
+<h3><i class="fas fa-folder-open"></i> الملفات المرفوعة</h3>
+<div class="filter-actions">
+<select class="form-control" style="width: auto;">
+<option>كل الملفات</option>
+<option>المستندات</option>
+<option>الصور</option>
+<option>PDF</option>
+</select>
+</div>
+</div>
+<div id="filesContainer">
+<!-- الملفات ستضاف هنا ديناميكيًا -->
+</div>
+</div>
+</div>
+</div>
+<!-- قسم الملاحظات -->
+<div class="section" id="notes-section">
+<div class="card">
+<div class="card-header">
+<h2><i class="fas fa-sticky-note"></i> الملاحظات السريعة</h2>
+<i class="fas fa-notes icon"></i>
+</div>
+<div class="focus-box">
+<div class="form-row">
+<div class="form-group">
+<label for="noteTitle"><i class="fas fa-heading"></i> عنوان الملاحظة</label>
+<input class="form-control" id="noteTitle" placeholder="عنوان ملاحظتك" type="text"/>
+</div>
+<div class="form-group">
+<label for="noteColor"><i class="fas fa-palette"></i> لون الملاحظة</label>
+<select class="form-control" id="noteColor">
+<option value="#f72585">وردي</option>
+<option value="#4361ee">أزرق</option>
+<option value="#4cc9f0">سماوي</option>
+<option value="#f8961e">برتقالي</option>
+<option value="#7209b7">بنفسجي</option>
+</select>
+</div>
+</div>
+<div class="form-group">
+<label for="noteContent"><i class="fas fa-align-left"></i> المحتوى</label>
+<textarea class="form-control" id="noteContent" placeholder="اكتب ملاحظاتك هنا..." rows="4"></textarea>
+</div>
+<button class="btn btn-primary btn-lg" id="addNoteBtn" style="width: 100%;">
+<i class="fas fa-plus-circle"></i> حفظ الملاحظة
+                    </button>
+</div>
+<div class="notes-container" id="notesContainer">
+<!-- الملاحظات ستضاف هنا ديناميكيًا -->
+</div>
+</div>
+</div>
+<!-- قسم الإحصائيات -->
+<div class="section" id="stats-section">
+<div class="card">
+<div class="card-header">
+<h2><i class="fas fa-chart-pie"></i> إحصائيات الإنتاجية</h2>
+<i class="fas fa-trophy icon"></i>
+</div>
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-tasks"></i>
+</div>
+<div class="stat-value" id="completedTasks">0</div>
+<div class="stat-label">مهام مكتملة</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-clock"></i>
+</div>
+<div class="stat-value" id="pomodoroSessions">0</div>
+<div class="stat-label">جلسات بومودورو</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-file"></i>
+</div>
+<div class="stat-value" id="uploadedFiles">0</div>
+<div class="stat-label">ملفات مرفوعة</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon">
+<i class="fas fa-sticky-note"></i>
+</div>
+<div class="stat-value" id="savedNotes">0</div>
+<div class="stat-label">ملاحظات</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- شريط التنقل السفلي -->
+<div class="bottom-nav">
+<div class="nav-item active" data-target="focus">
+<i class="fas fa-tasks"></i>
+<span>المهام</span>
+</div>
+<div class="nav-item" data-target="timer">
+<i class="fas fa-clock"></i>
+<span>المؤقت</span>
+</div>
+<div class="nav-item" data-target="calendar">
+<i class="fas fa-calendar-alt"></i>
+<span>التقويم</span>
+</div>
+<div class="nav-item" data-target="files">
+<i class="fas fa-folder-open"></i>
+<span>الملفات</span>
+</div>
+<div class="nav-item" data-target="notes">
+<i class="fas fa-sticky-note"></i>
+<span>الملاحظات</span>
+</div>
+<div class="nav-item" data-target="stats">
+<i class="fas fa-chart-pie"></i>
+<span>الإحصائيات</span>
+</div>
+</div>
+<!-- منطقة الإشعارات -->
+<div class="notification" id="notification">
+<i class="fas fa-check-circle"></i>
+<div>
+<div class="notification-title">تمت العملية بنجاح!</div>
+<div class="notification-message" id="notificationMessage">تمت إضافة المهمة بنجاح</div>
+</div>
+</div>
+<script>
+        // ======== تهيئة التطبيق ========
+        const App = {
+            tasks: [],
+            files: [],
+            notes: [],
+            pomodoroSessions: 0,
+            currentDate: new Date(),
+            selectedDate: new Date(),
+            timer: {
+                interval: null,
+                isRunning: false,
+                duration: 25 * 60,
+                currentDuration: 25 * 60,
+                mode: 'work'
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // تحميل البيانات من التخزين المحلي
+            loadData();
+            
+            // تهيئة الواجهة
+            initUI();
+            
+            // إعداد المستمعين للأحداث
+            setupEventListeners();
+        });
+
+        function loadData() {
+            // تحميل المهام
+            const savedTasks = localStorage.getItem('tasks');
+            if (savedTasks) {
+                App.tasks = JSON.parse(savedTasks);
+            }
+            
+            // تحميل الملفات
+            const savedFiles = localStorage.getItem('files');
+            if (savedFiles) {
+                App.files = JSON.parse(savedFiles);
+            }
+            
+            // تحميل الملاحظات
+            const savedNotes = localStorage.getItem('notes');
+            if (savedNotes) {
+                App.notes = JSON.parse(savedNotes);
+            }
+            
+            // تحميل جلسات البومودورو
+            const savedSessions = localStorage.getItem('pomodoroSessions');
+            if (savedSessions) {
+                App.pomodoroSessions = parseInt(savedSessions) || 0;
+            }
+            
+            // تحديث الإحصائيات
+            updateStatistics();
+        }
+
+        function saveData() {
+            localStorage.setItem('tasks', JSON.stringify(App.tasks));
+            localStorage.setItem('files', JSON.stringify(App.files));
+            localStorage.setItem('notes', JSON.stringify(App.notes));
+            localStorage.setItem('pomodoroSessions', App.pomodoroSessions.toString());
+        }
+
+        function initUI() {
+            // تهيئة المؤقت
+            updateTimerDisplay(App.timer.currentDuration);
+            
+            // عرض البيانات
+            renderTasks();
+            renderFiles();
+            renderNotes();
+            renderCalendar();
+            
+            // تعيين التاريخ الافتراضي
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('taskDate').value = today;
+            
+            // تعيين الوقت الافتراضي (بعد ساعة من الآن)
+            const now = new Date();
+            now.setHours(now.getHours() + 1);
+            document.getElementById('taskTime').value = now.toTimeString().substring(0, 5);
+            
+            // تحديث الإحصائيات
+            updateStatistics();
+            
+            // إظهار القسم النشط
+            showActiveSection('focus');
+            
+            // تحميل وضع التصفح المفضل
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.querySelector('#themeToggle i').className = 'fas fa-sun';
+            }
+        }
+
+        // ======== نظام المهام ========
+        function addNewTask() {
+            const title = document.getElementById('taskTitle').value.trim();
+            if (!title) {
+                showNotification('خطأ', 'يرجى إدخال عنوان للمهمة!', 'error');
+                return;
+            }
+
+            const newTask = {
+                id: 'task_' + Date.now(),
+                title: title,
+                description: document.getElementById('taskDescription').value.trim() || 'لا يوجد وصف',
+                date: document.getElementById('taskDate').value,
+                time: document.getElementById('taskTime').value,
+                category: document.getElementById('taskCategory').value,
+                priority: document.getElementById('taskPriority').value,
+                reminder: document.getElementById('taskReminder').checked,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+
+            App.tasks.push(newTask);
+            saveData();
+            renderTasks();
+            renderCalendar();
+            updateStatistics();
+            
+            // إعادة تعيين النموذج
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskReminder').checked = false;
+            
+            // إظهار الإشعار
+            showNotification('تمت الإضافة', 'تمت إضافة المهمة بنجاح!', 'success');
+        }
+
+        function renderTasks() {
+            const container = document.getElementById('tasksContainer');
+            container.innerHTML = '';
+
+            if (App.tasks.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-tasks" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                        <h3>لا توجد مهام</h3>
+                        <p>ابدأ بإضافة مهمة جديدة لزيادة إنتاجيتك</p>
+                    </div>
+                `;
+                return;
+            }
+
+            App.tasks.forEach(task => {
+                const taskEl = createTaskElement(task);
+                container.appendChild(taskEl);
+            });
+        }
+
+        function createTaskElement(task) {
+            const taskEl = document.createElement('div');
+            taskEl.className = `task-item ${task.completed ? 'completed' : ''}`;
+            
+            const formattedDate = task.date ? new Date(task.date).toLocaleDateString('ar-EG') : 'بدون تاريخ';
+            const formattedTime = task.time || 'بدون وقت';
+            
+            taskEl.innerHTML = `
+                <input type="checkbox" class="task-check" ${task.completed ? 'checked' : ''}>
+                <div class="task-content">
+                    <div class="task-title">${task.title}</div>
+                    <div class="task-description">${task.description}</div>
+                    <div class="task-meta">
+                        <span><i class="fas fa-calendar"></i> ${formattedDate}</span>
+                        <span><i class="fas fa-clock"></i> ${formattedTime}</span>
+                        <span><i class="fas fa-tag"></i> ${task.category}</span>
+                        <span><i class="fas fa-flag" style="color: ${getPriorityColor(task.priority)}"></i> ${task.priority}</span>
+                    </div>
+                    ${task.reminder ? '<div class="task-reminder"><i class="fas fa-bell"></i> تم تفعيل التذكير</div>' : ''}
+                </div>
+                <div class="task-actions">
+                    <div class="task-action-btn" title="تعديل">
+                        <i class="fas fa-edit"></i>
+                    </div>
+                    <div class="task-action-btn" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة تفاعل للمربع الاختياري
+            const checkbox = taskEl.querySelector('.task-check');
+            checkbox.addEventListener('change', () => {
+                task.completed = checkbox.checked;
+                taskEl.classList.toggle('completed', task.completed);
+                saveData();
+                updateStatistics();
+            });
+            
+            // إضافة تفاعل لزر التعديل
+            taskEl.querySelector('.fa-edit').closest('.task-action-btn').addEventListener('click', () => {
+                editTask(task);
+            });
+            
+            // إضافة تفاعل لزر الحذف
+            taskEl.querySelector('.fa-trash').closest('.task-action-btn').addEventListener('click', () => {
+                if (confirm(`هل تريد حذف المهمة: ${task.title}؟`)) {
+                    App.tasks = App.tasks.filter(t => t.id !== task.id);
+                    saveData();
+                    renderTasks();
+                    renderCalendar();
+                    updateStatistics();
+                }
+            });
+            
+            return taskEl;
+        }
+
+        function getPriorityColor(priority) {
+            switch(priority) {
+                case 'عادية': return 'var(--primary)';
+                case 'متوسطة': return 'var(--warning)';
+                case 'عاجلة': return 'var(--danger)';
+                default: return 'var(--gray)';
+            }
+        }
+
+        function editTask(task) {
+            document.getElementById('taskTitle').value = task.title;
+            document.getElementById('taskDescription').value = task.description;
+            document.getElementById('taskDate').value = task.date;
+            document.getElementById('taskTime').value = task.time;
+            document.getElementById('taskCategory').value = task.category;
+            document.getElementById('taskPriority').value = task.priority;
+            document.getElementById('taskReminder').checked = task.reminder;
+            
+            // حذف المهمة القديمة
+            App.tasks = App.tasks.filter(t => t.id !== task.id);
+            saveData();
+            renderTasks();
+            
+            // التمرير إلى الأعلى
+            document.getElementById('focus-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // ======== نظام المؤقت ========
+        function startTimer() {
+            if (App.timer.isRunning) return;
+            
+            App.timer.isRunning = true;
+            document.getElementById('startTimerBtn').disabled = true;
+            document.getElementById('pauseTimerBtn').disabled = false;
+            document.getElementById('timerLabel').innerHTML = '<i class="fas fa-fire"></i> جاري العمل...';
+            
+            App.timer.interval = setInterval(() => {
+                App.timer.currentDuration--;
+                updateTimerDisplay(App.timer.currentDuration);
+                
+                if (App.timer.currentDuration <= 0) {
+                    clearInterval(App.timer.interval);
+                    App.timer.isRunning = false;
+                    document.getElementById('timerLabel').innerHTML = '<i class="fas fa-check-circle"></i> انتهى الوقت!';
+                    document.getElementById('startTimerBtn').disabled = false;
+                    document.getElementById('pauseTimerBtn').disabled = true;
+                    
+                    // زيادة عدد جلسات البومودورو
+                    App.pomodoroSessions++;
+                    saveData();
+                    updateStatistics();
+                    
+                    // تشغيل صوت التنبيه
+                    playNotificationSound();
+                    
+                    // إظهار الإشعار
+                    showNotification('انتهى الوقت', 'حان وقت الاستراحة!', 'info');
+                }
+            }, 1000);
+        }
+
+        function pauseTimer() {
+            if (!App.timer.isRunning) return;
+            
+            clearInterval(App.timer.interval);
+            App.timer.isRunning = false;
+            document.getElementById('startTimerBtn').disabled = false;
+            document.getElementById('pauseTimerBtn').disabled = true;
+            document.getElementById('timerLabel').innerHTML = '<i class="fas fa-pause-circle"></i> متوقف مؤقتًا';
+        }
+
+        function resetTimer() {
+            clearInterval(App.timer.interval);
+            App.timer.isRunning = false;
+            App.timer.currentDuration = App.timer.duration;
+            updateTimerDisplay(App.timer.currentDuration);
+            document.getElementById('startTimerBtn').disabled = false;
+            document.getElementById('pauseTimerBtn').disabled = true;
+            document.getElementById('timerLabel').innerHTML = '<i class="fas fa-flag"></i> حان وقت العمل!';
+        }
+
+        function updateTimerDisplay(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            document.getElementById('timerDisplay').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function changeTimerMode(minutes) {
+            App.timer.duration = minutes * 60;
+            App.timer.currentDuration = minutes * 60;
+            resetTimer();
+            
+            // تحديث وضع المؤقت
+            document.getElementById('timerLabel').innerHTML = 
+                minutes === 25 ? '<i class="fas fa-flag"></i> حان وقت العمل!' : '<i class="fas fa-mug-hot"></i> وقت الاستراحة!';
+                
+            // تحديث الأزرار النشطة
+            document.querySelectorAll('.timer-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.minutes) === minutes) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // ======== نظام التقويم ========
+        function renderCalendar() {
+            const container = document.getElementById('calendarContainer');
+            const title = document.getElementById('calendarTitle');
+            
+            // تحديث العنوان
+            const monthNames = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+            title.textContent = `${monthNames[App.currentDate.getMonth()]} ${App.currentDate.getFullYear()}`;
+            
+            // مسح التقويم الحالي
+            container.innerHTML = '';
+            
+            // إضافة رؤوس الأيام
+            const days = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+            days.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'calendar-header';
+                dayHeader.textContent = day;
+                container.appendChild(dayHeader);
+            });
+            
+            // حساب الأيام
+            const firstDay = new Date(App.currentDate.getFullYear(), App.currentDate.getMonth(), 1);
+            const lastDay = new Date(App.currentDate.getFullYear(), App.currentDate.getMonth() + 1, 0);
+            
+            // إضافة أيام فارغة
+            const startDayIndex = firstDay.getDay();
+            for (let i = 0; i < startDayIndex; i++) {
+                container.appendChild(createEmptyDay());
+            }
+            
+            // إضافة أيام الشهر
+            const today = new Date();
+            for (let day = 1; day <= lastDay.getDate(); day++) {
+                const date = new Date(App.currentDate.getFullYear(), App.currentDate.getMonth(), day);
+                const isToday = date.toDateString() === today.toDateString();
+                const hasTasks = hasTasksOnDate(date, App.tasks);
+                
+                container.appendChild(createDayElement(day, isToday, hasTasks));
+            }
+        }
+
+        function createEmptyDay() {
+            const emptyDay = document.createElement('div');
+            emptyDay.className = 'calendar-day';
+            return emptyDay;
+        }
+
+        function createDayElement(day, isToday, hasEvents) {
+            const dayElement = document.createElement('div');
+            dayElement.className = `calendar-day ${isToday ? 'today' : ''}`;
+            
+            dayElement.innerHTML = `
+                <div class="day-number">${day}</div>
+                ${hasEvents ? '<div class="day-events"><div class="event-dot"></div><div class="event-dot"></div></div>' : ''}
+            `;
+            
+            return dayElement;
+        }
+
+        function hasTasksOnDate(date, tasks) {
+            const dateStr = date.toISOString().split('T')[0];
+            return tasks.some(task => task.date === dateStr);
+        }
+
+        // ======== نظام الملاحظات ========
+        function addNewNote() {
+            const title = document.getElementById('noteTitle').value.trim();
+            const content = document.getElementById('noteContent').value.trim();
+            
+            if (!title || !content) {
+                showNotification('خطأ', 'يرجى إدخال عنوان ومحتوى للملاحظة!', 'error');
+                return;
+            }
+            
+            const newNote = {
+                id: 'note_' + Date.now(),
+                title: title,
+                content: content,
+                color: document.getElementById('noteColor').value,
+                date: new Date().toLocaleDateString('ar-EG'),
+                createdAt: new Date().toISOString()
+            };
+            
+            App.notes.push(newNote);
+            saveData();
+            renderNotes();
+            updateStatistics();
+            
+            // إعادة تعيين النموذج
+            document.getElementById('noteTitle').value = '';
+            document.getElementById('noteContent').value = '';
+            
+            // إظهار الإشعار
+            showNotification('تمت الإضافة', 'تمت إضافة الملاحظة بنجاح!', 'success');
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notesContainer');
+            container.innerHTML = '';
+            
+            if (App.notes.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-sticky-note" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                        <h3>لا توجد ملاحظات</h3>
+                        <p>ابدأ بإضافة ملاحظاتك الأولى</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            App.notes.forEach(note => {
+                const noteEl = createNoteElement(note);
+                container.appendChild(noteEl);
+            });
+        }
+
+        function createNoteElement(note) {
+            const noteEl = document.createElement('div');
+            noteEl.className = 'note';
+            
+            noteEl.innerHTML = `
+                <div class="note-color" style="background: ${note.color};"></div>
+                <div class="note-header">
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-actions">
+                        <div class="action-btn" title="تعديل">
+                            <i class="fas fa-edit"></i>
+                        </div>
+                        <div class="action-btn" title="حذف">
+                            <i class="fas fa-trash"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="note-content">${note.content}</div>
+                <div class="note-date">${note.date}</div>
+            `;
+            
+            // إضافة تفاعل لزر التعديل
+            noteEl.querySelector('.fa-edit').closest('.action-btn').addEventListener('click', () => {
+                editNote(note);
+            });
+            
+            // إضافة تفاعل لزر الحذف
+            noteEl.querySelector('.fa-trash').closest('.action-btn').addEventListener('click', () => {
+                if (confirm(`هل تريد حذف الملاحظة: ${note.title}؟`)) {
+                    App.notes = App.notes.filter(n => n.id !== note.id);
+                    saveData();
+                    renderNotes();
+                    updateStatistics();
+                }
+            });
+            
+            return noteEl;
+        }
+
+        function editNote(note) {
+            document.getElementById('noteTitle').value = note.title;
+            document.getElementById('noteContent').value = note.content;
+            document.getElementById('noteColor').value = note.color;
+            
+            // حذف الملاحظة القديمة
+            App.notes = App.notes.filter(n => n.id !== note.id);
+            saveData();
+            renderNotes();
+        }
+
+        // ======== نظام الملفات ========
+        function handleFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const files = fileInput.files;
+            
+            if (files.length === 0) {
+                showNotification('خطأ', 'يرجى اختيار ملفات أولاً!', 'error');
+                return;
+            }
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileObj = {
+                    id: 'file_' + Date.now() + i,
+                    name: file.name,
+                    size: (file.size / 1024 / 1024).toFixed(2),
+                    type: file.type,
+                    date: new Date().toLocaleDateString('ar-EG'),
+                    icon: getFileIcon(file.type)
+                };
+                
+                App.files.push(fileObj);
+            }
+            
+            saveData();
+            renderFiles();
+            updateStatistics();
+            fileInput.value = '';
+            
+            showNotification('تم الرفع', `تم رفع ${files.length} ملفات بنجاح!`, 'success');
+        }
+
+        function getFileIcon(fileType) {
+            if (fileType.startsWith('image/')) return 'fa-file-image';
+            if (fileType === 'application/pdf') return 'fa-file-pdf';
+            if (fileType === 'application/msword' || fileType === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') 
+                return 'fa-file-word';
+            if (fileType === 'application/vnd.ms-excel' || fileType === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') 
+                return 'fa-file-excel';
+            return 'fa-file';
+        }
+
+        function renderFiles() {
+            const container = document.getElementById('filesContainer');
+            container.innerHTML = '';
+            
+            if (App.files.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                        <i class="fas fa-folder-open" style="font-size: 4rem; margin-bottom: 20px; opacity: 0.3;"></i>
+                        <h3>لا توجد ملفات</h3>
+                        <p>ابدأ برفع ملفاتك الأولى</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            App.files.forEach(file => {
+                const fileEl = createFileElement(file);
+                container.appendChild(fileEl);
+            });
+        }
+
+        function createFileElement(file) {
+            const fileEl = document.createElement('div');
+            fileEl.className = 'file-item';
+            
+            fileEl.innerHTML = `
+                <div class="file-icon">
+                    <i class="fas ${file.icon}"></i>
+                </div>
+                <div class="file-info">
+                    <div class="file-name">${file.name}</div>
+                    <div class="file-meta">
+                        <span><i class="fas fa-calendar"></i> ${file.date}</span>
+                        <span><i class="fas fa-database"></i> ${file.size} MB</span>
+                    </div>
+                </div>
+                <div class="file-actions">
+                    <div class="action-btn" title="تحميل">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <div class="action-btn" title="حذف">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                </div>
+            `;
+            
+            // إضافة تفاعل لزر الحذف
+            fileEl.querySelector('.fa-trash').closest('.action-btn').addEventListener('click', () => {
+                if (confirm(`هل تريد حذف الملف: ${file.name}؟`)) {
+                    App.files = App.files.filter(f => f.id !== file.id);
+                    saveData();
+                    renderFiles();
+                    updateStatistics();
+                }
+            });
+            
+            return fileEl;
+        }
+
+        // ======== نظام الإحصائيات ========
+        function updateStatistics() {
+            // المهام المكتملة
+            const completedTasks = App.tasks.filter(task => task.completed).length;
+            document.getElementById('completedTasks').textContent = completedTasks;
+            
+            // جلسات البومودورو
+            document.getElementById('pomodoroSessions').textContent = App.pomodoroSessions;
+            
+            // الملفات المرفوعة
+            document.getElementById('uploadedFiles').textContent = App.files.length;
+            
+            // الملاحظات المحفوظة
+            document.getElementById('savedNotes').textContent = App.notes.length;
+        }
+
+        // ======== وظائف مساعدة ========
+        function showNotification(title, message, type) {
+            const notification = document.getElementById('notification');
+            const messageEl = document.getElementById('notificationMessage');
+            
+            notification.style.borderLeftColor = type === 'error' ? 'var(--danger)' : 
+                type === 'success' ? 'var(--success)' : 'var(--primary)';
+            
+            document.querySelector('.notification i').className = 
+                type === 'error' ? 'fas fa-exclamation-circle' : 
+                type === 'success' ? 'fas fa-check-circle' : 'fas fa-info-circle';
+            
+            document.querySelector('.notification i').style.color = 
+                type === 'error' ? 'var(--danger)' : 
+                type === 'success' ? 'var(--success)' : 'var(--primary)';
+            
+            document.querySelector('.notification-title').textContent = title;
+            messageEl.textContent = message;
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function playNotificationSound() {
+            try {
+                const audio = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3');
+                audio.play();
+            } catch (e) {
+                console.log("حدث خطأ في تشغيل الصوت: ", e);
+            }
+        }
+
+        function showActiveSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(`${sectionId}-section`).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.target === sectionId) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#themeToggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        function setupEventListeners() {
+            // التنقل
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    showActiveSection(item.dataset.target);
+                });
+            });
+            
+            // المهام
+            document.getElementById('addTaskBtn').addEventListener('click', addNewTask);
+            
+            // المؤقت
+            document.getElementById('startTimerBtn').addEventListener('click', startTimer);
+            document.getElementById('pauseTimerBtn').addEventListener('click', pauseTimer);
+            document.getElementById('resetTimerBtn').addEventListener('click', resetTimer);
+            
+            document.querySelectorAll('.timer-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    changeTimerMode(parseInt(btn.dataset.minutes));
+                });
+            });
+            
+            // الملاحظات
+            document.getElementById('addNoteBtn').addEventListener('click', addNewNote);
+            
+            // الملفات
+            document.getElementById('uploadArea').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
+            
+            document.getElementById('uploadBtn').addEventListener('click', handleFileUpload);
+            
+            // التقويم
+            document.getElementById('prevMonthBtn').addEventListener('click', () => {
+                App.currentDate.setMonth(App.currentDate.getMonth() - 1);
+                renderCalendar();
+            });
+            
+            document.getElementById('nextMonthBtn').addEventListener('click', () => {
+                App.currentDate.setMonth(App.currentDate.getMonth() + 1);
+                renderCalendar();
+            });
+            
+            document.getElementById('todayBtn').addEventListener('click', () => {
+                App.currentDate = new Date();
+                renderCalendar();
+            });
+            
+            // تبديل الوضع
+            document.getElementById('themeToggle').addEventListener('click', toggleDarkMode);
+        }
+    </script>
+</body>
+</html>
